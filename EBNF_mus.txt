@@ -1,69 +1,39 @@
+PROGRAM = { COMMAND } ;
 
-BLOCK = { COMMAND } ;
-COMMAND = (( λ | ASSIGNMENT | PRINT | FUNCCALL | RETURN), ";") | WHILE | IF | FUNC;
-ASSIGNMENT = IDENTIFIER, "=", RELEXP, ";" ;
-PRINT = "𝄞", EXPRESSION, ";" ;
-WHILE = "𝄆", "(", COND, ")", CODE, "𝄇";
-IF = ("♪", "(", COND, ")", "{", BLOCK, "}", "♪") | ("♪", "(", COND, ")", "{", BLOCK, "}", "♪""𝅘𝅥𝅯", CODE, "𝅘𝅥𝅯");
-FUNC = "𝄌", "{", VAR, "(", PARAM, ")", BLOCK, ["return", RELEXP ]"}";
-RELEXP = EXPRESSION , { ("==" | ">" | "<"), EXPRESSION } ;
-EXPRESSION = TERM, { ("+" | "-" | "or"), TERM } ;
-TERM = FACTOR, { ("*" | "/" | "and"), FACTOR } ;
-FACTOR = (("+" | "-" | "!"), FACTOR) | NUMBER | "(", RELEXP, ")" | IDENTIFIER ;
-IDENTIFIER = "$", LETTER, { LETTER | DIGIT | "_" } ;
+COMMAND = (( λ | ASSIGNMENT | PRINT | FUNCCALL | RETURN ), "𝄼 ") | WHILE | IF | FUNCASSIG | COMMENT;
+
+ASSIGNMENT = IDENTIFIER, "♮", RELEXP;
+
+PRINT = "𝄞", EXPRESSION ;
+
+WHILE = "𝄆", "(", RELEXP, ")", CODE, "𝄇";
+
+IF = ("♪", "(", RELEXP, ")", "{", BLOCK, "}", "♪") | ("♪", "(", COND, ")", "{", BLOCK, "}", "♪""𝅘𝅥𝅯 ", CODE, "𝅘𝅥𝅯 ");
+
+FUNCASSIG = "𝄌", "{", VAR, "(", PARAMASSIG, ")", BLOCK, "}";
+
+PARAMCALL = [ RELEXP { "," RELEXP } ] ;
+
+PARAMASSIG = [ IDENTIFIER { "," IDENTIFIER } ] ;
+
+RETURN = "♫" , [RELEXP], "𝄼 "
+
+RELEXP = EXPRESSION , { ("𝆌" | "𝆓" | "𝆒"), EXPRESSION } ;
+
+EXPRESSION = TERM, { ("♯" | "♭" | "𝆐"), TERM } ;
+
+TERM = FACTOR, { ("𝄰" | "𝄭" | "𝆑"), FACTOR } ;
+
+FACTOR = (("♯" | "♭" | "𝆍"), FACTOR) | NUMBER | ( IDENTIFIER "(" PARAMCALL ")" ) | "(", RELEXP, ")" | IDENTIFIER | INPUT ;
+
+INPUT = "𝄢" ;
+
+IDENTIFIER = LETTER, { LETTER | DIGIT | "_" } ;
+
 NUMBER = DIGIT, { DIGIT } ;
+
 LETTER = ( a | ... | z | A | ... | Z ) ;
+
 DIGIT = ( 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0 ) ;
 
-
-
-COMMENT = "𝄾",{LET, NUM, VAR, COMP, OP, LOGI, PONT}; 
-
-NUM = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
-
-DIG = ["-" | "+"] NUM, {NUM};
-
-VAR = LET, {LET | NUM};
-
-COMP = ">" | "<" | "==" ;
-
-OP = "+" | "*" | "-" | "/";
-
-LOGI = "𝆑" | "𝆐" | "𝆍" ;
-
-COND = (VAR|BOOL|DIG|VAR), COMP, (VAR|BOOL|DIG|VAR|STRING);
-
-STRING = (""" | "'"), {LET|NUM|OP|LOGI|COMP|" "}, (""" | "'");
-
-PARAM = (BOOL|DIG|VAR|STRING) | (BOOL|DIG|VAR|STRING), {",", (BOOL|DIG|VAR|STRING)};
-
-FUNCNAME = "VAR", "(", [PARAM], ")";
-
-BOOL = "𝄞"| "𝄢";
-
-FOR = "𝄎", "(",VAROP, ";",COND, ";", VAROP, ")", CODE, "𝄎";
-
-WHILE = "𝄆", "(", COND, ")", CODE, "𝄇";
-
-FUNC = "𝄌", VAR, "(", [PARAM], ")", CODE, ["return", (DIG| STRING | BOOL | VAR | OPERATION | FUNCNAME], "𝄌";
-
-IF = ("♪", "(", COND, ")", "{", CODE, "}", "♪") | ("♪", "(", COND, ")", "{", CODE, "}", "♪""𝅘𝅥𝅯", CODE, "𝅘𝅥𝅯"); 
-
-ELSE = "𝅘𝅥𝅯", CODE, "𝅘𝅥𝅯";
-
-IFRULES = (IF, ELSE) | (IF, ELSE) | IF;
-
-VAROP = VAR, "=", (DIG| STRING | BOOL | VAR | OPERATION | FUNCNAME);
-
-OPERATION = (OPDIG | OPSTRING | COND);
-
-OPDIG = TERMDIG, { ("+" | "-"), TERMDIG } ;
-TERMDIG = FACTORDIG, { ("*" | "/"), FACTORDIG } ;
-FACTORDIG = ("+" | "-"), (FACTORDIG | "(" OPDIG ")" | (DIG | VAR)) ;
-
-OPSTRING = (STRING | VAR) {("+" | "-"), (STRING | VAR)};
-
-CODE = {(VAROP, "𝄼 ") | IFRULES | FUNC | WHILE | FOR | (FUNCCALL, "𝄼 ")};
-
-
-
+COMMENT = "𝄾",{*}; 
