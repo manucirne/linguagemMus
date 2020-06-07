@@ -16,7 +16,7 @@ PARAMCALL = [ RELEXP { "," RELEXP } ] ;
 
 PARAMASSIG = [ IDENTIFIER { "," IDENTIFIER } ] ;
 
-RETURN = "♫" , [RELEXP], "𝄼 "
+RETURN = "𝄋" , [RELEXP], "𝄼 "
 
 RELEXP = EXPRESSION , { ("𝆌" | "𝆓" | "𝆒"), EXPRESSION } ;
 
