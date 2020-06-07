@@ -12,8 +12,8 @@ class Commands(Node):
     def eval(self,table):
         for i in self.chil:
             i.eval(table)
-            if table.findRet("♫"):
-                return table.Getter("♫")["value"]
+            if table.findRet("RETURN"):
+                return table.Getter("RETURN")["value"]
             
 
 class Num(Node):

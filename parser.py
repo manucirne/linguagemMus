@@ -5,6 +5,19 @@ from AST import *
 #https://blog.usejournal.com/writing-your-own-programming-language-and-compiler-with-python-a468970ae6df
 #Ajuda do David para pensar o RETURN
 
+
+# BLOCK = "{", { COMMAND }, "}" ;
+# COMMAND = ( λ | ASSIGNMENT | PRINT), ";" | BLOCK ;
+# ASSIGNMENT = IDENTIFIER, "=", EXPRESSION, ";" ;
+# PRINT = "echo", EXPRESSION, ";" ;
+# EXPRESSION = TERM, { ("+" | "-"), TERM } ;
+# TERM = FACTOR, { ("*" | "/"), FACTOR } ;
+# FACTOR = (("+" | "-"), FACTOR) | NUMBER | "(", EXPRESSION, ")" | IDENTIFIER ;
+# IDENTIFIER = "$", LETTER, { LETTER | DIGIT | "_" } ;
+# NUMBER = DIGIT, { DIGIT } ;
+# LETTER = ( a | ... | z | A | ... | Z ) ;
+# DIGIT = ( 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0 ) ;
+
 class Parser():
     def __init__(self):
         self.pg = ParserGenerator(
@@ -47,11 +60,11 @@ class Parser():
         
         @self.pg.production('ret : RETURN relexp')
         def ret(p):
-            return Return(p[0].value,[p[1]])
+            return Return("RETURN",[p[1]])
             
         @self.pg.production('ret : RETURN')
         def retV(p):
-            return Return(p[0].value,[])
+            return Return("RETURN",[])
         
             
         @self.pg.production('whi : OWHILE OPAREN relexp CPAREN commands CWHILE')
