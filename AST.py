@@ -23,9 +23,9 @@ class Num(Node):
 class UnOp(Node):
     def eval(self,table):
         if self.value == "+":
-            return + self.chil[0].eval(table)
+            return +self.chil[0].eval(table)
         elif self.value == "-":
-            return - self.chil[0].eval(table)
+            return -self.chil[0].eval(table)
         elif self.value == "!":
             return  not self.chil[0].eval(table)
         
@@ -103,6 +103,10 @@ class BinOp(Node):
             return self.chil[0].eval(table) < self.chil[1].eval(table)
         elif self.value == "==":
             return self.chil[0].eval(table) == self.chil[1].eval(table)
+
+class BoolVal(Node):
+    def eval(self,SymbleTablez):
+        return self.value
 
 class Print(Node):
     def eval(self, table):

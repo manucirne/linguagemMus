@@ -7,48 +7,47 @@ class Lexer():
     def _add_tokens(self):
         # While
         self.lexer.add('OWHILE', r'\𝄆') # incio de repete é o início do while
-        self.lexer.add('CWHILE', r'\𝄇') # fim do repete é o fom do while
-        #For
-        self.lexer.add('FOR', r'\𝄎') #repetidor de compasso é o for
+        self.lexer.add('CWHILE', r'\𝄇') # fim do repete é o fim do while
         #If ELSE
         self.lexer.add('IF', r'\♪') # colcheia  é o if
         self.lexer.add('ELSE', r'\𝅘𝅥𝅯') # semicolcheia é o else
-        # Function
+        # Function - coda marca um lugar que deve ser retomado quando necessário
         self.lexer.add('FUNC', r'\𝄌') # coda é a função
-        # virgula
-        self.lexer.add('VIRG', r'\,')
-        # Print
-        self.lexer.add('PRINT', r'\𝄞') # clave de sol é o input
-        # Input
-        self.lexer.add('INPUT', r'\𝄢') # clave de fá é o input
+        # virgula - a notação de respiração substitue a vírgual
+        self.lexer.add('VIRG', r'\𝄒') #notação de respiração
+        # Print - quando a música sai do papel
+        self.lexer.add('PRINT', r'\🎙') # microfone é o print
+        # Input - pauta - Quando a ideia vai pro papel
+        self.lexer.add('INPUT', r'\🎼') # pauta com clave é o input
         # Parenthesis
         self.lexer.add('OPAREN', r'\(')
         self.lexer.add('CPAREN', r'\)')
-        # block
-        self.lexer.add('OBLOCK', r'\{')
-        self.lexer.add('CBLOCK', r'\}') 
-        # Semi Colon
+        # block - A barra dupla marca o início e o fim de uma música
+        self.lexer.add('OBLOCK', r'\𝄃') #barra dupla inicial
+        self.lexer.add('CBLOCK', r'\𝄂') #barra dupla final
+        # Semi Colon - a pausa de mínima marca um respiro maior, uma pausa para iniciar um novo pensamento
         self.lexer.add('FLINE', r'\𝄼') # pausa de mínima é o fim da linha
-        # Operators
+        # Operators - inspirados nos intervalos
         self.lexer.add('EQ', r'\♮') # bequadro é igual
-        self.lexer.add('SUM', r'\♯') #sharp é soma
-        self.lexer.add('SUB', r'\♭') # flat é o menos
-        self.lexer.add('MULT', r'\𝄰') #sharp up é o mult
-        self.lexer.add('DIV', r'\𝄭') #flat down é o div
-        self.lexer.add('AND', r'\𝆑') # forte é o and
-        self.lexer.add('OR', r'\𝆐') #mezzo é o or
-        self.lexer.add('NOT', r'\𝆍') #subto é o not
-        #COMPARATIVOS
+        self.lexer.add('SUM', r'\♯') #sustenido é soma
+        self.lexer.add('SUB', r'\♭') # bemol é o menos
+        self.lexer.add('MULT', r'\𝄶') #oitava acima é o mult
+        self.lexer.add('DIV', r'\𝄷') #oitava abaixo é o div
+        #lógicos - inspirados em notações de interpretaçao (com excessão do and)
+        self.lexer.add('AND', r'\𝅚') # cluster é o and - cluster é um acorde que junta notas de tons diferentes
+        self.lexer.add('OR', r'\𝆖') # trêmulo é o or
+        self.lexer.add('NOT', r'\𝆝') #ornamento é o not
+        #COMPARATIVOS - inspirados em notações de interpretaçao
         self.lexer.add('LESS', r'\𝆒') #crescendo é o menor
         self.lexer.add('MORE', r'\𝆓') #decrescendo é o maior
-        self.lexer.add('SAME', r'\𝆌') #Rinforzando é o == 
-        # Bool
-        self.lexer.add('TRUE', r'\𝆗') # volta é o true
-        self.lexer.add('FALSE', r'\𝆘') # invertida é o false
+        self.lexer.add('SAME', r'\𝄎') #repetição de compasso é o == 
+        # Bool - inspirados em notações de interpretaçao
+        self.lexer.add('TRUE', r'\𝆗') # turn é o true
+        self.lexer.add('FALSE', r'\𝆘') # inverted turn é o false
         # Number
         self.lexer.add('NUM', '\d+')
-        # return
-        self.lexer.add('RETURN', '\𝄋') #duas colcheias é o return
+        # return - segno marca um lugar importante da música o return faz o mesmo no código
+        self.lexer.add('RETURN', '\𝄋') #segno é o return
         # Variables
         self.lexer.add('VAR', '[a-zA-Z][a-zA-Z0-9_]*')
         # Ignore spaces

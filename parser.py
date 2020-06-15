@@ -5,19 +5,6 @@ from AST import *
 #https://blog.usejournal.com/writing-your-own-programming-language-and-compiler-with-python-a468970ae6df
 #Ajuda do David para pensar o RETURN
 
-
-# BLOCK = "{", { COMMAND }, "}" ;
-# COMMAND = ( λ | ASSIGNMENT | PRINT), ";" | BLOCK ;
-# ASSIGNMENT = IDENTIFIER, "=", EXPRESSION, ";" ;
-# PRINT = "echo", EXPRESSION, ";" ;
-# EXPRESSION = TERM, { ("+" | "-"), TERM } ;
-# TERM = FACTOR, { ("*" | "/"), FACTOR } ;
-# FACTOR = (("+" | "-"), FACTOR) | NUMBER | "(", EXPRESSION, ")" | IDENTIFIER ;
-# IDENTIFIER = "$", LETTER, { LETTER | DIGIT | "_" } ;
-# NUMBER = DIGIT, { DIGIT } ;
-# LETTER = ( a | ... | z | A | ... | Z ) ;
-# DIGIT = ( 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0 ) ;
-
 class Parser():
     def __init__(self):
         self.pg = ParserGenerator(
@@ -25,7 +12,7 @@ class Parser():
              'FLINE', 'SUM', 'SUB', 'DIV', 'MULT',
               'AND', 'OR', 'OBLOCK', 'CBLOCK', 'OWHILE', 'CWHILE',
               'IF', 'ELSE', 'NOT', 'SAME', 'LESS', 'MORE', 'NOT', 'EQ',
-              'VAR', 'INPUT','FUNC','VIRG', 'RETURN'],
+              'VAR', 'INPUT','FUNC','VIRG', 'RETURN','TRUE', 'FALSE'],
             )
 
     def parse(self):
@@ -71,13 +58,13 @@ class Parser():
         def whi(p):
             return Whi("while",[p[2],p[4]])
         
-        @self.pg.production('ifel : IF OPAREN relexp CPAREN OBLOCK commands CBLOCK')
-        @self.pg.production('ifel : IF OPAREN relexp CPAREN OBLOCK commands CBLOCK ELSE OBLOCK commands CBLOCK')
+        @self.pg.production('ifel : IF OPAREN relexp CPAREN commands IF')
+        @self.pg.production('ifel : IF OPAREN relexp CPAREN commands IF ELSE commands ELSE')
         def ifel(p):
             if len(p) > 7:
-                return Ifel("if", [p[2],p[5],p[9]])
+                return Ifel("if", [p[2],p[4],p[7]])
             else:
-                return Ifel("if",[p[2],p[5]])
+                return Ifel("if",[p[2],p[4]])
         
         @self.pg.production('assignment : VAR EQ relexp FLINE')
         def assignment(p):
@@ -125,10 +112,10 @@ class Parser():
             p[0].append(p[2].value)
             return p[0]
         
+        @self.pg.production('relexp : expression')
         @self.pg.production('relexp : expression LESS expression')
         @self.pg.production('relexp : expression MORE expression')
         @self.pg.production('relexp : expression SAME expression')
-        @self.pg.production('relexp : expression')
         def relexp(p):
             if len(p) > 1:
                 if p[1].gettokentype() == 'MORE':
@@ -140,11 +127,11 @@ class Parser():
             else:
                 return p[0]
 
+        @self.pg.production('expression : term')
         @self.pg.production('expression : term SUM term')
         @self.pg.production('expression : term SUB term')
         @self.pg.production('expression : term AND term')
         @self.pg.production('expression : term OR term')
-        @self.pg.production('expression : term')
         def expression(p):
             if len(p) > 1:
                 if p[1].gettokentype() == 'SUM':
@@ -157,10 +144,10 @@ class Parser():
                     return BinOp("or",[p[0],p[2]])
             else:
                 return p[0]
-            
+        
+        @self.pg.production('term : factor')    
         @self.pg.production('term : factor MULT factor')
         @self.pg.production('term : factor DIV factor')
-        @self.pg.production('term : factor')
         def term(p):
             if len(p) > 1:
                 if p[1].gettokentype() == 'MULT':
@@ -171,31 +158,43 @@ class Parser():
                 return p[0]
             
         @self.pg.production('factor : NUM')
-        @self.pg.production('factor : SUM factor')
-        @self.pg.production('factor : SUB factor')
-        @self.pg.production('factor : NOT factor')
-        @self.pg.production('factor : VAR')
+        @self.pg.production('factor : SUM NUM')
+        @self.pg.production('factor : SUB NUM')
+        @self.pg.production('factor : NOT NUM')
+        @self.pg.production('factor : NOT TRUE')
+        @self.pg.production('factor : NOT FALSE')
         @self.pg.production('factor : VAR paramcall')
+        @self.pg.production('factor : VAR')
         @self.pg.production('factor : OPAREN relexp CPAREN')
         @self.pg.production('factor : INPUT')
+        @self.pg.production('factor : TRUE')
+        @self.pg.production('factor : FALSE')
         def factor(p):
             if p[0].gettokentype() == 'NUM':
                 return Num(p[0].value,[])
             elif len(p) == 2 and p[0].gettokentype() == 'VAR':
-                print(p[0].value)
                 return Fun(p[0].value,p[1])
             elif p[0].gettokentype() == 'SUM':
-                return UnOp("+",[p[0].value])
+                return UnOp("+",[Num(p[1].value,[])])
             elif p[0].gettokentype() == 'SUB':
-                return UnOp("-",[p[0].value])
+                return UnOp("-",[Num(p[1].value,[])])
             elif p[0].gettokentype() == 'NOT':
-                return UnOp("!",[p[0].value])
+                if p[1].gettokentype() == 'NUM':
+                    return UnOp("!",[Num(p[1].value,[])])
+                elif p[1].gettokentype() == 'TRUE':
+                    return UnOp("!",[BoolVal(True,[])])
+                elif p[1].gettokentype() == 'FALSE':
+                    return UnOp("!",[BoolVal(False,[])])
             elif p[0].gettokentype() == 'VAR':
                 return Iden(p[0].value,[])
             elif p[0].gettokentype() == 'OPAREN':
                 return p[1]
             elif p[0].gettokentype() == 'INPUT':
                 return Input("",[p[0]])
+            elif p[0].gettokentype() == 'TRUE':
+                return BoolVal(True,[])
+            elif p[0].gettokentype() == 'FALSE':
+                return BoolVal(False,[])
 
         @self.pg.error
         def error_handle(token):
