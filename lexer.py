@@ -12,7 +12,8 @@ class Lexer():
         self.lexer.add('IF', r'\♪') # colcheia  é o if
         self.lexer.add('ELSE', r'\𝅘𝅥𝅯') # semicolcheia é o else
         # Function - coda marca um lugar que deve ser retomado quando necessário
-        self.lexer.add('FUNC', r'\𝄌') # coda é a função
+        self.lexer.add('FUNC', r'\𝄋') # segno é a função
+        self.lexer.add('FUNCC', r'\𝄉') # del segno é a chamada da função
         # virgula - a notação de respiração substitue a vírgual
         self.lexer.add('VIRG', r'\𝄒') #notação de respiração
         # Print - quando a música sai do papel
@@ -47,7 +48,7 @@ class Lexer():
         # Number
         self.lexer.add('NUM', '\d+')
         # return - segno marca um lugar importante da música o return faz o mesmo no código
-        self.lexer.add('RETURN', '\𝄋') #segno é o return
+        self.lexer.add('RETURN', '\𝄌') #coda é o return
         # Variables
         self.lexer.add('VAR', '[a-zA-Z][a-zA-Z0-9_]*')
         # Ignore spaces

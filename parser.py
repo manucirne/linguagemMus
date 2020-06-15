@@ -12,7 +12,7 @@ class Parser():
              'FLINE', 'SUM', 'SUB', 'DIV', 'MULT',
               'AND', 'OR', 'OBLOCK', 'CBLOCK', 'OWHILE', 'CWHILE',
               'IF', 'ELSE', 'NOT', 'SAME', 'LESS', 'MORE', 'NOT', 'EQ',
-              'VAR', 'INPUT','FUNC','VIRG', 'RETURN','TRUE', 'FALSE'],
+              'VAR', 'INPUT','FUNC','VIRG', 'RETURN','TRUE', 'FALSE', 'FUNCC'],
             )
 
     def parse(self):
@@ -74,9 +74,9 @@ class Parser():
         def funcassignment(p):
             return Assig(p[1].value,[p[4]],"FUNC",p[2])
         
-        @self.pg.production('funccall : VAR paramcall FLINE')
+        @self.pg.production('funccall : FUNCC VAR paramcall FLINE')
         def funccall(p):
-            return Fun(p[0].value,p[1])
+            return Fun(p[1].value,p[2])
         
         @self.pg.production('paramcall : OPAREN paramscall CPAREN')
         @self.pg.production('paramcall : OPAREN CPAREN')
@@ -163,7 +163,7 @@ class Parser():
         @self.pg.production('factor : NOT NUM')
         @self.pg.production('factor : NOT TRUE')
         @self.pg.production('factor : NOT FALSE')
-        @self.pg.production('factor : VAR paramcall')
+        @self.pg.production('factor : FUNCC VAR paramcall')
         @self.pg.production('factor : VAR')
         @self.pg.production('factor : OPAREN relexp CPAREN')
         @self.pg.production('factor : INPUT')
@@ -172,8 +172,8 @@ class Parser():
         def factor(p):
             if p[0].gettokentype() == 'NUM':
                 return Num(p[0].value,[])
-            elif len(p) == 2 and p[0].gettokentype() == 'VAR':
-                return Fun(p[0].value,p[1])
+            elif len(p) == 3 and p[1].gettokentype() == 'VAR':
+                return Fun(p[1].value,p[2])
             elif p[0].gettokentype() == 'SUM':
                 return UnOp("+",[Num(p[1].value,[])])
             elif p[0].gettokentype() == 'SUB':

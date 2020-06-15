@@ -19,13 +19,13 @@ Exemplo:
 >
 >IF = ("♪", "(", RELEXP, ")", BLOCK, "♪") | ("♪", "(", COND, ")", BLOCK, "♪", "𝅘𝅥𝅯 ", CODE, "𝅘𝅥𝅯 ");
 >
->FUNCASSIG = "𝄌", "𝄃", VAR, "(", PARAMASSIG, ")", BLOCK, "𝄂";
+>FUNCASSIG = "𝄋", "𝄃", VAR, "(", PARAMASSIG, ")", BLOCK, "𝄂";
 >
 >PARAMCALL = [ RELEXP { "," RELEXP } ] ;
 >
 >PARAMASSIG = [ IDENTIFIER { "," IDENTIFIER } ] ;
 >
->RETURN = "𝄋" , [RELEXP], "𝄼 "
+>RETURN = "𝄌" , [RELEXP], "𝄼 "
 >
 >RELEXP = EXPRESSION , { ("𝄎" | "𝆓" | "𝆒"), EXPRESSION } ;
 >
@@ -33,7 +33,7 @@ Exemplo:
 >
 >TERM = FACTOR, { ("𝄶" | "𝄷" | "𝅚 "), FACTOR } ;
 >
->FACTOR = (("♯" | "♭" | "𝆝"), FACTOR) | NUMBER | ( IDENTIFIER "(" PARAMCALL ")" ) | "(", RELEXP, ")" | IDENTIFIER | INPUT ;
+>FACTOR = (("♯" | "♭" | "𝆝"), FACTOR) | NUMBER | (𝄋 IDENTIFIER "(" PARAMCALL ")" ) | "(", RELEXP, ")" | IDENTIFIER | INPUT ;
 >
 >INPUT = "🎼" ;
 >
