@@ -1,6 +1,6 @@
 # linguagemMus
 
-Para rodar crie um arquivo .song que siga a ebnf documentada abaixo, rode programa e coloca como argumento o arquivo criado.
+Para rodar crie um arquivo .song que siga a ebnf documentada abaixo. Depois use o esse arquivo como argumento.
 Exemplo:
 
 > python3 main.py arquivo_criado.song
