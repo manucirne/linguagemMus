@@ -33,7 +33,7 @@ Exemplo:
 >
 >TERM = FACTOR, { ("𝄶" | "𝄷" | "𝅚 "), FACTOR } ;
 >
->FACTOR = (("♯" | "♭" | "𝆝"), FACTOR) | NUMBER | (𝄋 IDENTIFIER "(" PARAMCALL ")" ) | "(", RELEXP, ")" | IDENTIFIER | INPUT ;
+>FACTOR = (("♯" | "♭" | "𝆝"), FACTOR) | NUMBER | (𝄉 IDENTIFIER "(" PARAMCALL ")" ) | "(", RELEXP, ")" | IDENTIFIER | INPUT ;
 >
 >INPUT = "🎼" ;
 >
